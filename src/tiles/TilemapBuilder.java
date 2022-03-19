@@ -1,6 +1,7 @@
 package tiles;
 
 import com.jogamp.newt.event.KeyEvent;
+import core.BoxCollider;
 import core.Utilities;
 import core.interfaces.Draw;
 import core.interfaces.Update;
@@ -23,6 +24,8 @@ public class TilemapBuilder implements Update, Draw {
     private PVector offset = new PVector(-300, 0);
     private PVector offsetMouse = new PVector(0, 0);
 
+    private BoxCollider tileButtonBox;
+
     public TilemapBuilder(Tilemap map, String... spriteNames) {
         this.map = map;
 
@@ -35,6 +38,10 @@ public class TilemapBuilder implements Update, Draw {
                     new Tile(spriteNames[i])
             ));
         }
+
+        tileButtonBox = new BoxCollider(
+                new PVector(0, 0),
+                new PVector(300, Main.BOARD_SIZE.y));
     }
 
     @Override
@@ -104,14 +111,7 @@ public class TilemapBuilder implements Update, Draw {
     }
 
     private boolean mouseOnGrid() {
-        return !Utilities.inBox(
-                new PVector(0, 0),
-                new PVector(300, Main.BOARD_SIZE.y),
-                Main.matrixMousePosition
-        ) && Utilities.inBox(
-                new PVector(0, 0),
-                new PVector(map.tileSize * map.width, map.tileSize * map.width),
-                offsetMouse
-        );
+        return !tileButtonBox.inBox(Main.matrixMousePosition)
+                && map.tileMapBox.inBox(offsetMouse);
     }
 }
