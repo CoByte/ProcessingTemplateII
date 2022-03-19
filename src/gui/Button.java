@@ -51,9 +51,15 @@ public abstract class Button extends Trigger implements Update, Draw {
     @Override
     public void draw() {
         switch (state) {
-            case Idle -> drawIdle();
-            case Hover -> drawHover();
-            case Press -> drawPress();
+            case Idle:
+                drawIdle();
+                break;
+            case Hover:
+                drawHover();
+                break;
+            case Press:
+                drawPress();
+                break;
         }
     }
 

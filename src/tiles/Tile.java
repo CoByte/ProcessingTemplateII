@@ -1,17 +1,24 @@
 package tiles;
 
-import core.interfaces.Draw;
 import main.Main;
 import processing.core.PConstants;
 import processing.core.PImage;
 import processing.core.PVector;
+import processing.data.JSONObject;
 
 public class Tile {
 
+    private String spriteName;
     private PImage sprite;
 
-    public Tile(PImage sprite) {
-        this.sprite = sprite;
+    public Tile(String spriteName) {
+        this.spriteName = spriteName;
+        sprite = Main.sprites.get(spriteName);
+    }
+
+    public Tile(JSONObject serial) {
+        spriteName = serial.getString("sprite");
+        sprite = Main.sprites.get(spriteName);
     }
 
     /**
@@ -20,15 +27,7 @@ public class Tile {
      */
     public void draw(PVector offset) {
         Main.app.rectMode(PConstants.CENTER);
-        PVector center = offset.add(getCenter());
-        Main.app.image(sprite, center.x, center.y);
-    }
-
-    /**
-     * @return where the image should be centered on the tile
-     */
-    public PVector getCenter() {
-        return new PVector(0,0);
+        Main.app.image(sprite, offset.x, offset.y);
     }
 
     /**
@@ -36,5 +35,11 @@ public class Tile {
      */
     public PImage getSprite() {
         return sprite;
+    }
+
+    public JSONObject serialize() {
+        JSONObject data = new JSONObject();
+        data.setString("sprite", spriteName);
+        return data;
     }
 }

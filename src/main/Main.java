@@ -45,9 +45,6 @@ public class Main extends PApplet {
 
     private final InputManager inputManager = InputManager.getInstance();
 
-    public Tilemap testmap;
-    public TilemapBuilder builder;
-
     public static void main(String[] args) {
         PApplet.main("main.Main", args);
     }
@@ -71,22 +68,6 @@ public class Main extends PApplet {
 
 //        setupSound();
         setupFullscreen();
-
-        // TODO: remove
-        sprites.get("circleyboi").resize(100, 100);
-        sprites.get("radishh").resize(0, 100);
-
-        // TODO: remove
-        System.out.println(sprites);
-        testmap = new Tilemap(100, 100, 100);
-        builder = new TilemapBuilder(
-                testmap,
-                new Tile(sprites.get("circleyboi")),
-                new Tile(sprites.get("radishh"))
-        );
-
-        System.out.println(height);
-        System.out.println(width);
     }
 
     /**
@@ -101,7 +82,7 @@ public class Main extends PApplet {
             if (!sprites.containsKey(framePath)) break;
             images.add(sprites.get(framePath));
         }
-        return images.toArray(PImage[]::new);
+        return images.toArray(new PImage[images.size()]);
     }
 
     private void setupFullscreen() {
@@ -130,11 +111,7 @@ public class Main extends PApplet {
 //        drawSound();
 
         pushFullscreen();
-
-        // TODO: actually draw game
-        builder.update();
-        builder.draw();
-
+        
         popFullscreen();
     }
 

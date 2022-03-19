@@ -1,5 +1,6 @@
 package tiles;
 
+import com.jogamp.newt.event.KeyEvent;
 import core.Utilities;
 import core.interfaces.Draw;
 import core.interfaces.Update;
@@ -22,18 +23,16 @@ public class TilemapBuilder implements Update, Draw {
     private PVector offset = new PVector(-300, 0);
     private PVector offsetMouse = new PVector(0, 0);
 
-    public TilemapBuilder(Tilemap map, Tile... tiles) {
+    public TilemapBuilder(Tilemap map, String... spriteNames) {
         this.map = map;
 
-        System.out.println(tiles);
-
         tileButtons = new ArrayList<>();
-        for (int i = 0; i < tiles.length; i++) {
+        for (int i = 0; i < spriteNames.length; i++) {
             int x = i % 4;
             int y = i / 4;
             tileButtons.add(new TileButton(
                     x * 50, y * 50,
-                    tiles[i]
+                    new Tile(spriteNames[i])
             ));
         }
     }
@@ -41,7 +40,6 @@ public class TilemapBuilder implements Update, Draw {
     @Override
     public void update() {
         offsetMouse = PVector.add(offset, Main.matrixMousePosition);
-        System.out.println(offsetMouse);
 
         for (TileButton button : tileButtons) {
             button.update();
@@ -70,6 +68,10 @@ public class TilemapBuilder implements Update, Draw {
             }
         }
 
+        if (input.getEvent(KeyEvent.VK_Z).rising()) {
+            System.out.println("Wack");
+            map.save();
+        }
     }
 
     @Override
