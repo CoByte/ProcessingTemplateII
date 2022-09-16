@@ -2,7 +2,6 @@ package tiles;
 
 import com.jogamp.newt.event.KeyEvent;
 import core.BoxCollider;
-import core.Utilities;
 import core.interfaces.Draw;
 import core.interfaces.Update;
 import gui.TileButton;
@@ -58,7 +57,7 @@ public class TilemapBuilder implements Update, Draw {
         }
 
         if (input.middleMouse.triggered()) {
-            offset.sub(PVector.sub(Main.fullscreenMousePosition, Main.priorMatrixMousePosition));
+            offset.sub(PVector.sub(Main.fullscreenMousePosition, Main.priorFullscreenMousePosition));
         }
 
         if (mouseOnGrid()) {
@@ -106,12 +105,12 @@ public class TilemapBuilder implements Update, Draw {
         // draws the tile rect
         Main.app.rectMode(PConstants.CORNER);
         Main.app.fill(255);
-        Main.app.rect(0, 0, 300, Main.app.BOARD_SIZE.y);
+        Main.app.rect(0, 0, 300, Main.BOARD_SIZE.y);
         tileButtons.forEach(TileButton::draw);
     }
 
     private boolean mouseOnGrid() {
-        return !tileButtonBox.inBox(Main.matrixMousePosition)
+        return !tileButtonBox.inBox(Main.fullscreenMousePosition)
                 && map.tileMapBox.inBox(offsetMouse);
     }
 }

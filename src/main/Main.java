@@ -32,8 +32,8 @@ public class Main extends PApplet {
     private static final Color BACKGROUND_COLOR = new Color(0, 15, 45);
     private static final boolean FULLSCREEN = true;
 
-    private static float matrixScale;
-    private static float matrixOffset;
+    private static float fullscreenScale;
+    private static float fullscreenOffset;
 
     public static HashMap<String, PImage> sprites = new HashMap<>();
     public static HashMap<String, PImage[]> animations;
@@ -44,7 +44,7 @@ public class Main extends PApplet {
     public static HashMap<String, SoundWithAlts> soundsWithAlts;
     public static HashMap<String, StartStopSoundLoop> startStopSoundLoops;
 
-    public static PVector priorMatrixMousePosition;
+    public static PVector priorFullscreenMousePosition;
     public static PVector fullscreenMousePosition;
 
     private final InputManager inputManager = InputManager.getInstance();
@@ -86,16 +86,16 @@ public class Main extends PApplet {
             if (!sprites.containsKey(framePath)) break;
             images.add(sprites.get(framePath));
         }
-        return images.toArray(new PImage[images.size()]);
+        return images.toArray(new PImage[0]);
     }
 
     private void setupFullscreen() {
         if (hasVerticalBars()) {
-            matrixScale = height / BOARD_SIZE.y;
-            matrixOffset = (width - (BOARD_SIZE.x * matrixScale)) / 2;
+            fullscreenScale = height / BOARD_SIZE.y;
+            fullscreenOffset = (width - (BOARD_SIZE.x * fullscreenScale)) / 2;
         } else {
-            matrixScale = width / BOARD_SIZE.x;
-            matrixOffset = (height - (BOARD_SIZE.y * matrixScale)) / 2;
+            fullscreenScale = width / BOARD_SIZE.x;
+            fullscreenOffset = (height - (BOARD_SIZE.y * fullscreenScale)) / 2;
         }
     }
 
@@ -127,14 +127,14 @@ public class Main extends PApplet {
 
     private void pushFullscreen() {
         pushMatrix();
-        if (hasVerticalBars()) translate(matrixOffset, 0);
-        else translate(0, matrixOffset);
-        scale(matrixScale);
-        priorMatrixMousePosition = fullscreenMousePosition;
+        if (hasVerticalBars()) translate(fullscreenOffset, 0);
+        else translate(0, fullscreenOffset);
+        scale(fullscreenScale);
+        priorFullscreenMousePosition = fullscreenMousePosition;
         if (hasVerticalBars()) {
-            fullscreenMousePosition = new PVector((mouseX - matrixOffset) / matrixScale, mouseY / matrixScale);
+            fullscreenMousePosition = new PVector((mouseX - fullscreenOffset) / fullscreenScale, mouseY / fullscreenScale);
         } else {
-            fullscreenMousePosition = new PVector(mouseX / matrixScale, (mouseY - matrixOffset) / matrixScale);
+            fullscreenMousePosition = new PVector(mouseX / fullscreenScale, (mouseY - fullscreenOffset) / fullscreenScale);
         }
     }
 
@@ -154,11 +154,11 @@ public class Main extends PApplet {
         rectMode(CORNER);
         noStroke();
         if (hasVerticalBars()) {
-            rect(0, 0, matrixOffset, height);
-            rect(width - matrixOffset, 0, matrixOffset, height);
+            rect(0, 0, fullscreenOffset, height);
+            rect(width - fullscreenOffset, 0, fullscreenOffset, height);
         } else {
-            rect(0, 0, width, matrixOffset);
-            rect(0, height - matrixOffset, width, matrixOffset);
+            rect(0, 0, width, fullscreenOffset);
+            rect(0, height - fullscreenOffset, width, fullscreenOffset);
         }
         rectMode(DEFAULT_MODE);
     }
