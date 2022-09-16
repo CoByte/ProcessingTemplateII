@@ -12,6 +12,18 @@ import static processing.core.PApplet.abs;
 import static processing.core.PApplet.round;
 
 public class Utilities {
+
+    /**
+     * Finds the distance between two points.
+     * @param p1 the first point
+     * @param p2 the second point
+     * @return the distance between the two points
+     */
+    public static float getDistanceBetween(PVector p1, PVector p2) {
+        PVector p0 = new PVector(p1.x - p2.x, p1.y - p2.y);
+        return sqrt(sq(p0.x) + sq(p0.y));
+    }
+
     /**
      * Detects if a point in inside the box created by top left and bottom right
      * @param topLeft the top left coordinate of the box
