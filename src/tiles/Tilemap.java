@@ -60,6 +60,7 @@ public class Tilemap implements Draw {
         map[x][y] = t;
     }
 
+    // todo: fix
     public boolean collidingWith(BoxCollider collider) {
         float x1 = collider.topLeft.x;
         float y1 = collider.topLeft.y;
