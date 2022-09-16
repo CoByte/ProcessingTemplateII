@@ -1,12 +1,10 @@
-package sprites;
+package core;
 
-import core.Timer;
 import processing.core.PImage;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
-public class Animator {
+public class Animation {
 
     private final boolean LOOP;
     private final PImage[] ANIMATION;
@@ -17,13 +15,13 @@ public class Animator {
      * @param animation a looped sequence of images
      * @param betweenFrames how many frames before flipping to next image
      */
-    public Animator(PImage[] animation, int betweenFrames, boolean loop) {
+    public Animation(PImage[] animation, int betweenFrames, boolean loop) {
         LOOP = loop;
         ANIMATION = animation;
         ANIMATION_TIMER = new Timer(animation.length, betweenFrames);
     }
 
-    public Animator(PImage[] animation, int betweenFrames) {
+    public Animation(PImage[] animation, int betweenFrames) {
         this(animation, betweenFrames, true);
     }
 

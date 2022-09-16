@@ -1,5 +1,6 @@
 package main;
 
+import core.Loader;
 import input.InputManager;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -9,13 +10,11 @@ import processing.sound.SoundFile;
 import sound.FadeSoundLoop;
 import sound.SoundWithAlts;
 import sound.StartStopSoundLoop;
-import sprites.SpriteLoader;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-
-import static sound.SoundLoader.loadSounds;
 
 public class Main extends PApplet {
 
@@ -36,7 +35,6 @@ public class Main extends PApplet {
     private static float fullscreenOffset;
 
     public static HashMap<String, PImage> sprites = new HashMap<>();
-    public static HashMap<String, PImage[]> animations;
 
     public static Sound sound;
     public static HashMap<String, SoundFile> sounds;
@@ -68,8 +66,7 @@ public class Main extends PApplet {
         frameRate(FRAMERATE);
         surface.setTitle(TITLE);
 
-        sprites = SpriteLoader.loadSprites();
-
+        sprites = Loader.loadSprites();
         setupSound();
         setupFullscreen();
     }
@@ -82,7 +79,7 @@ public class Main extends PApplet {
     private PImage[] framesFromSprites(String path) {
         ArrayList<PImage> images = new ArrayList<>();
         for (int i = 0; true; i++) {
-            String framePath = path + i;
+            String framePath = path + "_" + i;
             if (!sprites.containsKey(framePath)) break;
             images.add(sprites.get(framePath));
         }
@@ -105,7 +102,7 @@ public class Main extends PApplet {
         startStopSoundLoops = new HashMap<>();
         fadeSoundLoops = new HashMap<>();
         soundsWithAlts = new HashMap<>();
-        loadSounds();
+        sounds = Loader.loadSounds();
     }
 
     @Override
