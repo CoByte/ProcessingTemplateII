@@ -115,7 +115,7 @@ public class Main extends PApplet {
         drawSound();
 
         pushFullscreen();
-        
+
         popFullscreen();
     }
 

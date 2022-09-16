@@ -10,7 +10,7 @@ import tiles.TilemapBuilder;
 import java.util.ArrayList;
 
 public abstract class Scene implements Update, Draw {
-    private final boolean editTiles = true;
+    private boolean editTiles = false;
     private int tileLayer = 0;
 
     public ArrayList<Tilemap> tilemaps;
@@ -20,6 +20,10 @@ public abstract class Scene implements Update, Draw {
 
     @Override
     public void update() {
+        if (input.getEvent(KeyEvent.VK_X).rising()) {
+            editTiles = !editTiles;
+        }
+
         if (editTiles) {
             for (short i = KeyEvent.VK_1; i <= KeyEvent.VK_9; i++) {
                 if (input.getEvent(i).rising()) {

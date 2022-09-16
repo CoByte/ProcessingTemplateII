@@ -1,5 +1,6 @@
 package tiles;
 
+import core.BoxCollider;
 import core.interfaces.Draw;
 import main.Main;
 import processing.core.PConstants;
@@ -18,13 +19,19 @@ public class Tilemap implements Draw {
     public final int height;
     public final float tileSize;
 
+    public final BoxCollider tileMapBox;
+
     public Tile[][] map;
 
     public Tilemap(String name, int width, int height, float tileSize) {
+        this.name = name;
         this.width = width;
         this.height = height;
         this.tileSize = tileSize;
-        this.name = name;
+
+        tileMapBox = new BoxCollider(
+                new PVector(0, 0),
+                new PVector(tileSize * width, tileSize * width));
 
         map = new Tile[width][height];
         try {
@@ -51,6 +58,28 @@ public class Tilemap implements Draw {
 
     public void set(Tile t, int x, int y) {
         map[x][y] = t;
+    }
+
+    public boolean collidingWith(BoxCollider collider) {
+        float x1 = collider.topLeft.x;
+        float y1 = collider.topLeft.y;
+        float x2 = collider.bottomRight.x;
+        float y2 = collider.bottomRight.y;
+        return collidingWith(x1, y1) ||
+                collidingWith(x1, y2) ||
+                collidingWith(x2, y1) ||
+                collidingWith(x2, y2);
+    }
+
+    public boolean collidingWith(float x, float y) {
+        return collidingWith(new PVector(x, y));
+    }
+
+    public boolean collidingWith(PVector point) {
+        if (!tileMapBox.inBox(point)) return false;
+        int x = (int) point.x / (int) tileSize;
+        int y = (int) point.y / (int) tileSize;
+        return map[x][y] != null;
     }
 
     @Override
