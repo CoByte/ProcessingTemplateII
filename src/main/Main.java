@@ -4,14 +4,18 @@ import input.InputManager;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
+import processing.sound.Sound;
+import processing.sound.SoundFile;
+import sound.FadeSoundLoop;
+import sound.SoundWithAlts;
+import sound.StartStopSoundLoop;
 import sprites.SpriteLoader;
-import tiles.Tile;
-import tiles.Tilemap;
-import tiles.TilemapBuilder;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static sound.SoundLoader.loadSounds;
 
 public class Main extends PApplet {
 
@@ -34,14 +38,14 @@ public class Main extends PApplet {
     public static HashMap<String, PImage> sprites = new HashMap<>();
     public static HashMap<String, PImage[]> animations;
 
-//    public static Sound sound;
-//    public static HashMap<String, SoundFile> sounds;
-//    public static HashMap<String, StartStopSoundLoop> startStopSoundLoops;
-//    public static HashMap<String, FadeSoundLoop> fadeSoundLoops;
-//    public static HashMap<String, SoundWithAlts> soundsWithAlts;
+    public static Sound sound;
+    public static HashMap<String, SoundFile> sounds;
+    public static HashMap<String, FadeSoundLoop> fadeSoundLoops;
+    public static HashMap<String, SoundWithAlts> soundsWithAlts;
+    public static HashMap<String, StartStopSoundLoop> startStopSoundLoops;
 
     public static PVector priorMatrixMousePosition;
-    public static PVector matrixMousePosition;
+    public static PVector fullscreenMousePosition;
 
     private final InputManager inputManager = InputManager.getInstance();
 
@@ -66,7 +70,7 @@ public class Main extends PApplet {
 
         sprites = SpriteLoader.loadSprites();
 
-//        setupSound();
+        setupSound();
         setupFullscreen();
     }
 
@@ -95,42 +99,42 @@ public class Main extends PApplet {
         }
     }
 
-//    private void setupSound() {
-//        sound = new Sound(this);
-//        sounds = new HashMap<>();
-//        startStopSoundLoops = new HashMap<>();
-//        fadeSoundLoops = new HashMap<>();
-//        soundsWithAlts = new HashMap<>();
-//        loadSounds(this);
-//    }
+    private void setupSound() {
+        sound = new Sound(this);
+        sounds = new HashMap<>();
+        startStopSoundLoops = new HashMap<>();
+        fadeSoundLoops = new HashMap<>();
+        soundsWithAlts = new HashMap<>();
+        loadSounds();
+    }
 
     @Override
     public void draw() {
         inputManager.update();
         background(BACKGROUND_COLOR.getRGB());
-//        drawSound();
+        drawSound();
 
         pushFullscreen();
         
         popFullscreen();
     }
 
-//    private void drawSound() {
-//        sound.volume(globalVolume);
-//        for (StartStopSoundLoop startStopSoundLoop : startStopSoundLoops.values()) startStopSoundLoop.continueLoop();
-//        for (FadeSoundLoop fadeSoundLoop : fadeSoundLoops.values()) fadeSoundLoop.main();
-//    }
+    private void drawSound() {
+        sound.volume(globalVolume);
+        for (StartStopSoundLoop startStopSoundLoop : startStopSoundLoops.values()) startStopSoundLoop.continueLoop();
+        for (FadeSoundLoop fadeSoundLoop : fadeSoundLoops.values()) fadeSoundLoop.main();
+    }
 
     private void pushFullscreen() {
         pushMatrix();
         if (hasVerticalBars()) translate(matrixOffset, 0);
         else translate(0, matrixOffset);
         scale(matrixScale);
-        priorMatrixMousePosition = matrixMousePosition;
+        priorMatrixMousePosition = fullscreenMousePosition;
         if (hasVerticalBars()) {
-            matrixMousePosition = new PVector((mouseX - matrixOffset) / matrixScale, mouseY / matrixScale);
+            fullscreenMousePosition = new PVector((mouseX - matrixOffset) / matrixScale, mouseY / matrixScale);
         } else {
-            matrixMousePosition = new PVector(mouseX / matrixScale, (mouseY - matrixOffset) / matrixScale);
+            fullscreenMousePosition = new PVector(mouseX / matrixScale, (mouseY - matrixOffset) / matrixScale);
         }
     }
 

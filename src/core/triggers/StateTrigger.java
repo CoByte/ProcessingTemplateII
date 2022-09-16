@@ -1,8 +1,6 @@
 package core.triggers;
 
-/**
- * Like a trigger, but with an internal state that can be shut on and off
- */
+/** Like a trigger, but with an internal state that can be shut on and off */
 public class StateTrigger extends Trigger {
     private boolean state = false;
 

@@ -13,7 +13,9 @@ public class IntVector {
 
     public IntVector(int[] arr) {
         this(arr[0], arr[1]);
-        if (arr.length > 2) System.out.println("IntVector must have a length of two");
+        if (arr.length > 2) {
+            throw new RuntimeException("IntVector input array must have a length of two");
+        }
     }
 
     public IntVector(PVector p) {

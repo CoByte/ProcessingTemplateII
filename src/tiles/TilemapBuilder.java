@@ -16,11 +16,11 @@ public class TilemapBuilder implements Update, Draw {
 
     private final InputManager input = InputManager.getInstance();
 
-    private Tilemap map;
-    private ArrayList<TileButton> tileButtons;
+    private final Tilemap map;
+    private final ArrayList<TileButton> tileButtons;
     private TileButton selectedTile;
 
-    private PVector offset = new PVector(-300, 0);
+    private final PVector offset = new PVector(-300, 0);
     private PVector offsetMouse = new PVector(0, 0);
 
     public TilemapBuilder(Tilemap map, String... spriteNames) {
@@ -39,7 +39,7 @@ public class TilemapBuilder implements Update, Draw {
 
     @Override
     public void update() {
-        offsetMouse = PVector.add(offset, Main.matrixMousePosition);
+        offsetMouse = PVector.add(offset, Main.fullscreenMousePosition);
 
         for (TileButton button : tileButtons) {
             button.update();
@@ -51,7 +51,7 @@ public class TilemapBuilder implements Update, Draw {
         }
 
         if (input.middleMouse.triggered()) {
-            offset.sub(PVector.sub(Main.matrixMousePosition, Main.priorMatrixMousePosition));
+            offset.sub(PVector.sub(Main.fullscreenMousePosition, Main.priorMatrixMousePosition));
         }
 
         if (mouseOnGrid()) {
@@ -99,7 +99,7 @@ public class TilemapBuilder implements Update, Draw {
         // draws the tile rect
         Main.app.rectMode(PConstants.CORNER);
         Main.app.fill(255);
-        Main.app.rect(0, 0, 300, Main.app.BOARD_SIZE.y);
+        Main.app.rect(0, 0, 300, Main.BOARD_SIZE.y);
         tileButtons.forEach(TileButton::draw);
     }
 
@@ -107,7 +107,7 @@ public class TilemapBuilder implements Update, Draw {
         return !Utilities.inBox(
                 new PVector(0, 0),
                 new PVector(300, Main.BOARD_SIZE.y),
-                Main.matrixMousePosition
+                Main.fullscreenMousePosition
         ) && Utilities.inBox(
                 new PVector(0, 0),
                 new PVector(map.tileSize * map.width, map.tileSize * map.width),

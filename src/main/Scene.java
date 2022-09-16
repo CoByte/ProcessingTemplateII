@@ -10,13 +10,13 @@ import tiles.TilemapBuilder;
 import java.util.ArrayList;
 
 public abstract class Scene implements Update, Draw {
-    private boolean editTiles = true;
+    private final boolean editTiles = true;
     private int tileLayer = 0;
 
     public ArrayList<Tilemap> tilemaps;
     public ArrayList<TilemapBuilder> builders;
 
-    private InputManager input = InputManager.getInstance();
+    private final InputManager input = InputManager.getInstance();
 
     @Override
     public void update() {

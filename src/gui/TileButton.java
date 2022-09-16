@@ -10,7 +10,7 @@ public class TileButton extends Button {
     public boolean selected = false;
 
     public Tile tile;
-    private PImage tileSprite;
+    private final PImage tileSprite;
 
     public TileButton(float x, float y, Tile tile) {
         super(x, y);
@@ -29,13 +29,13 @@ public class TileButton extends Button {
     public void drawIdle() {
         Main.app.image(tileSprite, position.x , position.y);
         if (selected)
-            Main.app.image(Main.app.sprites.get("gui_button_selected"), position.x, position.y);
+            Main.app.image(Main.sprites.get("gui_button_selected"), position.x, position.y);
     }
 
     @Override
     public void drawHover() {
         drawIdle();
         if (!selected)
-            Main.app.image(Main.app.sprites.get("gui_button_hover"), position.x, position.y);
+            Main.app.image(Main.sprites.get("gui_button_hover"), position.x, position.y);
     }
 }

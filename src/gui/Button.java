@@ -34,7 +34,7 @@ public abstract class Button extends Trigger implements Update, Draw {
     public void updateState() {
         boolean isPressed = false;
 
-        if (Utilities.inBox(position, PVector.add(position, size), Main.app.matrixMousePosition)) {
+        if (Utilities.inBox(position, PVector.add(position, size), Main.fullscreenMousePosition)) {
             if (input.leftMouse.triggered()) {
                 state = ButtonState.Press;
                 isPressed = true;
