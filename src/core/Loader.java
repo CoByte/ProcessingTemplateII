@@ -82,9 +82,7 @@ public class Loader {
                     .replace('\\', '_')
                     .replace('/', '_');
 
-            System.out.println(path);
-
-            items.put(name, itemLoader.apply(path));
+            items.put(name, itemLoader.apply(file.toString()));
 
             return FileVisitResult.CONTINUE;
         }
