@@ -37,7 +37,10 @@ public class MusicBox implements Update {
     @Override
     public void update() {
         if (volume == MIN_VOLUME) {
-            if (currentTrack != null) tracks.get(currentTrack).stop();
+            if (currentTrack != null) {
+                tracks.get(currentTrack).stop();
+                currentTrack = null;
+            }
             if (nextTrack != null) {
                 currentTrack = nextTrack;
                 nextTrack = null;
