@@ -17,6 +17,7 @@ public class MusicBox implements Update {
     private String currentTrack;
     private String nextTrack;
     private float volume = MIN_VOLUME;
+    private float nextVolume;
     private float incrementAmount;
     private float targetVolume;
 
@@ -40,13 +41,13 @@ public class MusicBox implements Update {
             if (nextTrack != null) {
                 currentTrack = nextTrack;
                 nextTrack = null;
+                targetVolume = nextVolume;
                 tracks.get(currentTrack).loop();
                 tracks.get(currentTrack).amp(volume);
             }
         }
-        if (currentTrack == null) return;
         volume = Utilities.smartIncrement(volume, incrementAmount, targetVolume);
-        tracks.get(currentTrack).amp(volume);
+        if (currentTrack != null) tracks.get(currentTrack).amp(volume);
     }
 
     public void setVolume(float volume, float proportionPerFrame) {
@@ -65,12 +66,26 @@ public class MusicBox implements Update {
             System.out.println("\"" + newTrack + "\" not found, available options:\n    " + tracks);
             return;
         }
+        if (currentTrack == null) {
+            setVolume(volume, proportionPerFrame);
+            this.volume = MIN_VOLUME * 2;
+            nextTrack = null;
+            currentTrack = newTrack;
+            tracks.get(currentTrack).loop();
+            tracks.get(currentTrack).amp(MIN_VOLUME);
+            return;
+        }
         nextTrack = newTrack;
-        setVolume(volume, proportionPerFrame);
+        nextVolume = volume;
+        setVolume(0, proportionPerFrame);
     }
 
-    public void switchTrack(String newTrack, float volume) {
-        switchTrack(newTrack, volume, DEFAULT_INCREMENT_AMOUNT);
+    public void switchTrack(String newTrack) {
+        if (currentTrack == null) {
+            switchTrack(newTrack, 1, DEFAULT_INCREMENT_AMOUNT);
+        } else {
+            switchTrack(newTrack, volume, DEFAULT_INCREMENT_AMOUNT);
+        }
     }
 
     public void stop() {
