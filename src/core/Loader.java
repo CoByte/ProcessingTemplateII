@@ -78,7 +78,7 @@ public class Loader {
 
             String path = ROOT_PATH.relativize(file).toString();
             String name = path
-                    .substring(8, path.length() - 4)
+                    .substring(folder.length() + 1, path.length() - 4)
                     .replace('\\', '_')
                     .replace('/', '_');
 
