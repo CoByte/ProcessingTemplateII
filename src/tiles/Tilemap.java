@@ -10,7 +10,9 @@ import processing.data.JSONObject;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class Tilemap implements Draw {
 
@@ -20,6 +22,7 @@ public class Tilemap implements Draw {
     public final float tileSize;
 
     public final BoxCollider tileMapBox;
+    public final String path;
 
     public Tile[][] map;
 
@@ -32,11 +35,17 @@ public class Tilemap implements Draw {
         tileMapBox = new BoxCollider(
                 new PVector(0, 0),
                 new PVector(tileSize * width, tileSize * width));
+        path = "resources/tilemaps/" + name + ".json";
 
         map = new Tile[width][height];
         try {
-            if (!new File("resources/tilemaps/" + name + ".json").createNewFile()) {
-                JSONArray tileData = Main.app.loadJSONArray("resources/tilemaps/" + name + ".json");
+            if (new File(path).createNewFile()) {
+                FileWriter writer = new FileWriter(path);
+                writer.write("[]");
+                writer.close();
+            } else {
+                String fullPath = Paths.get(path).toAbsolutePath().toString();
+                JSONArray tileData = Main.app.loadJSONArray(fullPath);
                 for (int i = 0; i < tileData.size(); i++) {
                     JSONObject tile = tileData.getJSONObject(i);
                     int x = tile.getInt("x");
@@ -48,7 +57,7 @@ public class Tilemap implements Draw {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Could not create file resources/tilemaps/" + name + ".json" + " (" + e.toString() + ")");
+            throw new RuntimeException("Could not create file resources/tilemaps/" + name + ".json" + " (" + e + ")");
         }
     }
 
