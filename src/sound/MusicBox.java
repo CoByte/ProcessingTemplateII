@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 public class MusicBox implements Update {
 
-    private static final float MIN_VOLUME = 0.001f;
-    private static final float DEFAULT_INCREMENT_AMOUNT = 0.05f;
+    public static final float MIN_VOLUME = 0.001f;
+    public static final float DEFAULT_INCREMENT_AMOUNT = 0.05f;
 
     private final HashMap<String, SoundFile> tracks = new HashMap<>();
 
@@ -76,6 +76,10 @@ public class MusicBox implements Update {
             currentTrack = newTrack;
             tracks.get(currentTrack).loop();
             tracks.get(currentTrack).amp(MIN_VOLUME);
+            return;
+        }
+        if (currentTrack.equals(newTrack)) {
+            setVolume(volume, proportionPerFrame);
             return;
         }
         nextTrack = newTrack;
